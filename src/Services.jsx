@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { MessageSquare, TrendingUp, Users, Layout, ArrowUpRight } from 'lucide-react';
+import service1 from './assets/service 1.png';
+import service2 from './assets/service 2.png';
+import service3 from './assets/service 3.png';
+import service4 from './assets/service 4.png';
 
 const SERVICES_DATA = [
   {
@@ -8,7 +12,6 @@ const SERVICES_DATA = [
     headline: 'Enterprise Chatbots',
     description: 'Scalable, secure, and ready to handle thousands of concurrent queries with zero latency.',
     icon: <MessageSquare className="w-14 h-14 text-[#00d2ff]" />,
-    tags: ['Security', 'Scale', '24/7', 'Global']
   },
   {
     id: 'sales-automation',
@@ -16,7 +19,6 @@ const SERVICES_DATA = [
     headline: 'Sales Automation',
     description: 'Intelligent funnels that qualify leads and schedule meetings while you sleep, maximizing conversion.',
     icon: <TrendingUp className="w-14 h-14 text-[#34d399]" />,
-    tags: ['Leads', 'Growth', 'Auto-Pilot', 'Smart']
   },
   {
     id: 'customer-success',
@@ -24,7 +26,6 @@ const SERVICES_DATA = [
     headline: 'Customer Success',
     description: 'Support that understands nuance and resolves complex tickets instantly using advanced NLP.',
     icon: <Users className="w-14 h-14 text-emerald-500" />,
-    tags: ['Support', 'Retention', 'NLP', 'Fast']
   },
   {
     id: 'interactive-ui-ux',
@@ -32,7 +33,6 @@ const SERVICES_DATA = [
     headline: 'Interactive UI/UX',
     description: 'Stunning, responsive chat interfaces designed with Tailwind CSS for a premium, high-converting feel.',
     icon: <Layout className="w-14 h-14 text-purple-500" />,
-    tags: ['Design', 'UX', 'Tailwind', 'Mobile']
   }
 ];
 
@@ -42,14 +42,23 @@ const Services = () => {
   const total = SERVICES_DATA.length;
 
   return (
-    <section id="services" className="py-32 bg-neutral-50 flex items-center justify-center p-6 md:p-12 font-sans selection:bg-cyan-100 overflow-hidden">
-      <div className="max-w-[1400px] w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+    <section id="services" className="relative py-48 bg-neutral-50 flex items-center justify-center p-6 md:p-12 font-sans selection:bg-cyan-100 overflow-hidden">
+      {/* Background Decorative Element */}
+      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-500/5 blur-[160px] rounded-full pointer-events-none"></div>
+
+      <div className="max-w-[1500px] w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10">
 
         {/* Left Content Column */}
-        <div className="lg:col-span-5 space-y-12 z-50 py-4">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-black leading-tight tracking-tight">
-            What sets our <br /> solutions apart?
-          </h1>
+        <div className="lg:col-span-5 space-y-16 z-50 py-4">
+          <div className="space-y-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/10 border border-cyan-500/20 rounded-full text-[12px] font-bold text-cyan-600 tracking-[0.2em] uppercase">
+              Core Capabilities
+            </div>
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-neutral-900 leading-[1.1] tracking-tighter">
+              What sets our <br />
+              <span className="bg-gradient-to-r from-cyan-600 to-emerald-600 bg-clip-text text-transparent">solutions apart?</span>
+            </h1>
+          </div>
 
           <nav className="flex flex-col space-y-6">
             {SERVICES_DATA.map((service) => (
@@ -57,13 +66,15 @@ const Services = () => {
                 key={service.id}
                 onClick={() => setActiveTab(service.id)}
                 className={`flex items-center text-left group transition-all duration-300 ${activeTab === service.id
-                  ? 'text-[#00d2ff] font-bold'
-                  : 'text-neutral-800 text-bold hover:text-black'
+                  ? 'text-black font-bold'
+                  : 'text-black font-medium'
                   }`}
               >
-                <span className={`w-3 h-3 rounded-full mr-6 transition-transform duration-300 ${activeTab === service.id ? 'bg-[#00d2ff] scale-150 shadow-[0_0_20px_rgba(0,210,255,0.6)]' : 'bg-neutral-200 group-hover:scale-110'
+                <div className={`w-2 h-16 mr-10 rounded-full transition-all duration-500 ${activeTab === service.id
+                  ? 'bg-gradient-to-b from-cyan-500 to-emerald-500 opacity-100 shadow-[0_0_30px_rgba(6,182,212,0.4)]'
+                  : 'bg-neutral-200 opacity-30 group-hover:opacity-100'
                   }`} />
-                <span className="text-xl md:text-2xl lg:text-3xl tracking-tight">
+                <span className="text-2xl md:text-3xl lg:text-4xl tracking-tighter  duration-300 group-hover:translate-x-2">
                   {service.title}
                 </span>
               </button>
@@ -71,21 +82,31 @@ const Services = () => {
           </nav>
         </div>
 
-        {/* Right Preview Column - Refined Infinite Loop Stack */}
-        <div className="lg:col-span-7 relative h-[750px] flex items-center justify-center">
+        {/* Right Preview Column */}
+        <div className="lg:col-span-7 relative h-[900px] flex items-center justify-center">
           <div className="relative w-full h-full flex items-center justify-center">
             {SERVICES_DATA.map((service, index) => {
-              // Calculate circular offset for infinite loop effect
               let displayOffset = (index - activeIdx + total) % total;
-
               const isFront = displayOffset === 0;
 
+              const isEnterprise = service.id === 'enterprise-chatbots';
+              const isSalesAutomation = service.id === 'sales-automation';
+              const isCustomerSuccess = service.id === 'customer-success';
+              const isUIUX = service.id === 'interactive-ui-ux';
+              const hasImage = isEnterprise || isSalesAutomation || isCustomerSuccess || isUIUX;
+
+              let activeImage = null;
+              if (isEnterprise) activeImage = service1;
+              else if (isSalesAutomation) activeImage = service2;
+              else if (isCustomerSuccess) activeImage = service3;
+              else if (isUIUX) activeImage = service4;
+
               const style = {
-                transform: `perspective(1000px) translateX(${displayOffset * 100}px) translateZ(${-displayOffset * 50}px) scale(${1 - displayOffset * 0.08})`,
+                transform: `perspective(2000px) translateX(${displayOffset * 150}px) translateZ(${-displayOffset * 150}px) rotateY(${-displayOffset * 5}deg) scale(${1 - displayOffset * 0.08})`,
                 zIndex: 40 - displayOffset,
-                opacity: isFront ? 1 : 0.4 - (displayOffset * 0.1),
+                opacity: isFront ? 1 : Math.max(0, 0.6 - (displayOffset * 0.2)),
                 cursor: isFront ? 'default' : 'pointer',
-                filter: isFront ? 'none' : `blur(${displayOffset * 0.5}px)`,
+                filter: isFront ? 'none' : `blur(${displayOffset * 1}px)`,
               };
 
               return (
@@ -93,65 +114,54 @@ const Services = () => {
                   key={service.id}
                   style={style}
                   onClick={() => !isFront && setActiveTab(service.id)}
-                  className={`absolute left-0 top-1/2 -translate-y-1/2 w-full max-w-[540px] bg-white rounded-[2.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.15)] overflow-hidden border transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${isFront ? 'border-neutral-100' : 'border-transparent'
-                    } hover:border-[#00d2ff]/40`}
+                  className={`absolute left-0 top-1/2 -translate-y-1/2 w-full max-w-[750px] aspect-[16/10] bg-neutral-900 rounded-[3.5rem] shadow-[0_60px_120px_-30px_rgba(0,0,0,0.4)] overflow-hidden border transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1) ${isFront ? 'border-white/10' : 'border-transparent'
+                    } group`}
                 >
-                  {/* High-Clarity Top Section */}
-                  <div className="h-72 bg-[#0a0a0a] relative overflow-hidden flex items-center justify-center">
-                    <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
-
-                    {/* Animated Glow Effect in background */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-[#00d2ff]/10 blur-[80px] rounded-full"></div>
-
-                    {/* Icon/Visual with enhanced glow */}
-                    <div className="relative z-10 flex flex-col items-center">
-                      <div className="p-8 bg-neutral-900/80 backdrop-blur-2xl rounded-[2rem] border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] mb-4 transition-all duration-500 group-hover:scale-105 group-hover:border-[#00d2ff]/40">
-                        {service.icon}
+                  {/* Image Background with Blending */}
+                  <div className="absolute inset-0 z-0">
+                    {hasImage ? (
+                      <img
+                        src={activeImage}
+                        alt=""
+                        className="w-full h-full object-cover transition-transform duration-[3000ms] ease-out group-hover:scale-110"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-neutral-900 flex items-center justify-center">
+                        <div className="w-64 h-64 bg-cyan-500/20 blur-[100px] rounded-full animate-pulse"></div>
                       </div>
-                    </div>
-
-                    {/* Premium Glass Labels */}
-                    <div className="absolute top-8 left-8 px-4 py-2 border border-white/5 bg-white/5 backdrop-blur-xl rounded-xl text-[10px] text-neutral-300 uppercase tracking-[0.2em] font-black">
-                      {service.tags[0]}
-                    </div>
-                    <div className="absolute top-8 right-8 px-4 py-2 border border-white/5 bg-white/5 backdrop-blur-xl rounded-xl text-[10px] text-neutral-300 uppercase tracking-[0.2em] font-black">
-                      {service.tags[1]}
-                    </div>
-                    <div className="absolute bottom-8 left-8 px-4 py-2 border border-white/5 bg-white/5 backdrop-blur-xl rounded-xl text-[10px] text-neutral-300 uppercase tracking-[0.2em] font-black">
-                      {service.tags[2]}
-                    </div>
-                    <div className="absolute bottom-8 right-8 px-4 py-2 border border-white/5 bg-white/5 backdrop-blur-xl rounded-xl text-[10px] text-neutral-300 uppercase tracking-[0.2em] font-black">
-                      {service.tags[3]}
-                    </div>
-
-                    <div className="absolute inset-6 border border-white/5 rounded-[2rem] pointer-events-none"></div>
+                    )}
+                    {/* Gradient Overlays for Blending */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent z-10"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-neutral-950/20 to-transparent z-10"></div>
                   </div>
 
-                  {/* Content Section */}
-                  <div className="p-10 space-y-6 bg-white">
-                    <h3 className="text-3xl font-bold text-black leading-tight tracking-tight">
-                      {service.headline}
-                    </h3>
-                    <p className="text-neutral-700 text-lg md:text-xl leading-relaxed font-medium">
+                  {/* Icon floating */}
+                  <div className="absolute top-10 right-10 z-20">
+                    <div className="p-5 bg-white/5 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:border-cyan-500/50">
+                      {React.cloneElement(service.icon, { className: 'w-8 h-8 text-white' })}
+                    </div>
+                  </div>
+
+                  {/* Content Overlay */}
+                  <div className="absolute inset-x-0 bottom-0 p-12 md:p-16 z-20 space-y-8">
+                    <div className="space-y-3">
+                      <h3 className="text-4xl md:text-5xl font-bold text-white leading-tight tracking-tighter">
+                        {service.headline}
+                      </h3>
+                    </div>
+                    <p className="text-neutral-200 text-xl md:text-2xl leading-relaxed font-medium">
                       {service.description}
                     </p>
-
-                    <div className="pt-8 flex items-center justify-between border-t border-neutral-100">
-                      <div className="flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 bg-[#00d2ff] rounded-full"></span>
-                        <span className="text-xs font-mono text-neutral-400 uppercase tracking-widest">Active Module.0{index + 1}</span>
-                      </div>
-                      <button className="group flex items-center gap-3 text-black font-black hover:text-[#00d2ff] transition-all text-lg">
-                        <span className="relative overflow-hidden inline-block">
-                          Explore
-                          <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#00d2ff] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
-                        </span>
-                        <div className="w-10 h-10 rounded-full bg-neutral-50 flex items-center justify-center group-hover:bg-[#00d2ff] group-hover:text-white transition-all">
-                          <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                        </div>
-                      </button>
+                    <div className="pt-6">
+                      <a href="#contact" className="flex items-center gap-4 text-white font-black text-base md:text-lg uppercase tracking-[0.2em] group/link w-fit border-b border-white/20 pb-1 hover:border-white transition-all">
+                        Start Now 
+                        <ArrowUpRight className="w-6 h-6 transition-transform duration-300 group-hover/link:translate-x-1 group-hover/link:-translate-y-1" />
+                      </a>
                     </div>
                   </div>
+
+                  {/* Inner Border Decorative */}
+                  <div className="absolute inset-6 border border-white/5 rounded-[2rem] pointer-events-none z-30"></div>
                 </div>
               );
             })}
@@ -160,6 +170,4 @@ const Services = () => {
       </div>
     </section>
   );
-};
-
-export default Services;
+}; export default Services;

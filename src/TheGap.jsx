@@ -1,253 +1,204 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import {
+  Zap,
+  Brain,
+  Activity,
+  Target,
+  RefreshCcw,
+  ChevronRight,
+  ShieldCheck,
+  Cpu
+} from 'lucide-react';
 
 const TheGap = () => {
-  const containerRef = useRef(null);
-  const horizontalRef = useRef(null);
-  const canvasRef = useRef(null);
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeTab, setActiveTab] = useState('standard');
+  const [isHovered, setIsHovered] = useState(null);
 
+  // Background Neural Animation Effect
+  const [dots, setDots] = useState([]);
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    let width, height;
-    let particles = [];
-    let animationFrameId;
-
-    const PARTICLE_COUNT = 1200;
-
-    class Particle {
-      constructor() {
-        this.init();
-      }
-
-      init() {
-        this.x = Math.random() * window.innerWidth;
-        this.y = Math.random() * window.innerHeight;
-        this.size = Math.random() * 1.2 + 0.3;
-        this.color = 'rgba(255, 255, 255, 0.5)';
-        this.angle = Math.random() * Math.PI * 2;
-        this.dist = Math.random() * 180 + 20;
-        this.speed = Math.random() * 0.005 + 0.002;
-        this.jitterX = 0;
-        this.jitterY = 0;
-      }
-
-      update(state, time) {
-        const centerX = width / 2;
-        const centerY = height / 2;
-
-        if (state === 0) { // Intro
-          this.angle += this.speed;
-          let tx = centerX + Math.cos(this.angle) * this.dist;
-          let ty = centerY + Math.sin(this.angle) * this.dist;
-          this.x += (tx - this.x) * 0.03;
-          this.y += (ty - this.y) * 0.03;
-          this.color = 'rgba(255, 255, 255, 0.25)';
-        } 
-        else if (state === 1) { // Problem
-          this.angle += 0.02;
-          this.jitterX = Math.sin(time * 0.001 + this.dist) * 2;
-          this.jitterY = Math.cos(time * 0.0012 + this.dist) * 2;
-          let tx = centerX + (this.x - centerX) + (Math.random() - 0.5) * 2;
-          let ty = centerY + (this.y - centerY) + (Math.random() - 0.5) * 2;
-          this.x += (tx - this.x) * 0.02 + this.jitterX * 0.1;
-          this.y += (ty - this.y) * 0.02 + this.jitterY * 0.1;
-          const pulse = (Math.sin(time * 0.003 + this.dist) + 1) / 2;
-          this.color = `rgba(244, 63, 94, ${0.2 + pulse * 0.3})`;
-        }
-        else if (state === 2) { // Solution
-          const cols = 40;
-          const spacing = width / cols;
-          const index = particles.indexOf(this);
-          const gridX = (index % cols) * spacing;
-          const gridY = Math.floor(index / cols) * (height / (PARTICLE_COUNT / cols));
-          const wave = Math.sin(time * 0.0015 + (gridX * 0.005)) * 15;
-          this.x += (gridX - this.x) * 0.06;
-          this.y += (gridY + wave - this.y) * 0.06;
-          this.color = 'rgba(16, 185, 129, 0.6)';
-        }
-      }
-
-      draw() {
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    const resize = () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      if (particles.length === 0) {
-        for (let i = 0; i < PARTICLE_COUNT; i++) {
-          particles.push(new Particle());
-        }
-      }
-    };
-
-    const animate = (time) => {
-      ctx.clearRect(0, 0, width, height);
-      particles.forEach(p => {
-        p.update(activeStep, time);
-        p.draw();
-        if (activeStep === 2 && Math.random() > 0.998) {
-          ctx.strokeStyle = 'rgba(16, 185, 129, 0.08)';
-          ctx.lineWidth = 0.5;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(width / 2, height / 2);
-          ctx.stroke();
-        }
-      });
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    resize();
-    animate(0);
-    window.addEventListener('resize', resize);
-    return () => {
-      window.removeEventListener('resize', resize);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, [activeStep]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current || !horizontalRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const scrollProgress = Math.max(0, Math.min(1, -rect.top / (rect.height - window.innerHeight)));
-      
-      // Update horizontal translation
-      const translateX = scrollProgress * (horizontalRef.current.scrollWidth - window.innerWidth);
-      horizontalRef.current.style.transform = `translateX(-${translateX}px)`;
-
-      // Determine active step
-      if (scrollProgress < 0.25) setActiveStep(0);
-      else if (scrollProgress < 0.75) setActiveStep(1);
-      else setActiveStep(2);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const newDots = Array.from({ length: 15 }).map((_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 2 + 1,
+      duration: Math.random() * 15 + 10,
+      delay: Math.random() * 5
+    }));
+    setDots(newDots);
   }, []);
 
   return (
-    <section 
-      id="the-gap" 
-      ref={containerRef}
-      className="relative bg-[#02040a] h-[300vh]" // Triple height for vertical-to-horizontal mapping
-    >
-      <style>{`
-        .glass-panel {
-          background: rgba(255, 255, 255, 0.02);
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .text-gradient-neural {
-          background: linear-gradient(to right, #fff, #10b981);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-        .text-gradient-legacy {
-          background: linear-gradient(to right, #fff, #f43f5e);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-      `}</style>
+    <section id="the-gap" className="py-32 bg-neutral-200 text-neutral-900 font-sans selection:bg-cyan-100 overflow-hidden relative">
+      {/* Background Neural Particles */}
+      <div className="absolute inset-0 pointer-events-none opacity-20">
+        {dots.map((dot) => (
+          <div
+            key={dot.id}
+            className="absolute bg-[#00d2ff] rounded-full blur-[1px]"
+            style={{
+              left: `${dot.x}%`,
+              top: `${dot.y}%`,
+              width: `${dot.size}px`,
+              height: `${dot.size}px`,
+              animation: `float ${dot.duration}s infinite linear ${dot.delay}s`,
+            }}
+          />
+        ))}
+      </div>
 
-      {/* Sticky Container */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* Background Canvas & Grid */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
-          <canvas ref={canvasRef} className="w-full h-full" />
-        </div>
+      <style>
+        {`
+          @keyframes float {
+            0% { transform: translate(0, 0); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translate(100px, -100px); opacity: 0; }
+          }
+          .glass-card-gap-light {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+          }
+          .neural-glow-gap-light {
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 255, 0.1);
+          }
+        `}
+      </style>
 
-        {/* Swipe/Scroll Hint */}
-        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-50 font-mono text-[10px] text-white/30 uppercase tracking-[0.3em] animate-pulse">
-          Scroll vertically to traverse singularity
-        </div>
-
-        {/* Horizontal Navigation Dots (Bottom) */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[100] flex gap-5 items-center">
-          {[0, 1, 2].map((step) => (
-            <div 
-              key={step} 
-              className={`w-12 h-[2px] transition-all duration-500 ${activeStep === step ? 'bg-blue-500 shadow-[0_0_10px_#3b82f6]' : 'bg-white/10'}`}
-            ></div>
-          ))}
-        </div>
-
-        {/* Horizontal Moving Content */}
-        <div 
-          ref={horizontalRef}
-          className="flex h-full w-[300vw] will-change-transform transition-transform duration-100 ease-out"
-        >
-          {/* Panel 1: Intro */}
-          <div className="w-screen h-full flex items-center justify-center px-[10%] shrink-0">
-            <div className="max-w-4xl text-center">
-              <div className="font-mono text-blue-500 text-xs tracking-widest mb-4 uppercase">Project Evoke // Phase 01</div>
-              <h2 className="text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-none text-white">
-                  Evolution Beyond <br/> <span className="opacity-50">The Basic Bot.</span>
-              </h2>
-              <p className="text-slate-400 text-xl mx-auto max-w-lg font-light leading-relaxed">
-                  The gap between automation and intelligence is expanding. We bridge it with clinical precision.
-              </p>
-            </div>
+      <div className="max-w-6xl mx-auto px-6 relative z-10">
+        {/* Header Section */}
+        <header className="mb-24 text-center">
+          <div className="inline-flex items-center px-4 py-1.5 rounded-full border border-[#00d2ff]/20 bg-white text-[#00d2ff] text-[10px] font-bold tracking-[0.3em] uppercase mb-6 shadow-sm">
+            Future-Proof Systems
           </div>
+          <h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 bg-gradient-to-b from-black to-neutral-600 bg-clip-text text-transparent leading-[1.1]">
+            Evolution Beyond <br /> Static Automation.
+          </h2>
+          <p className="max-w-2xl mx-auto text-lg md:text-xl text-neutral-1000 font-medium leading-relaxed">
+            We bridge the gap between predictable scripts and cognitive intelligence.
+          </p>
+        </header>
 
-          {/* Panel 2: The Problem */}
-          <div className="w-screen h-full flex items-center justify-center px-[10%] shrink-0">
-            <div 
-              className="glass-panel p-12 rounded-[2rem] max-w-[500px] hover:border-red-500/30 group relative"
-              onMouseMove={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width - 0.5;
-                const y = (e.clientY - rect.top) / rect.height - 0.5;
-                e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateZ(5px)`;
-              }}
-              onMouseLeave={(e) => e.currentTarget.style.transform = 'none'}
+        {/* Interaction Toggle */}
+        <div className="flex justify-center mb-20">
+          <div className="bg-neutral-900 p-1.5 rounded-2xl border border-neutral-800 flex gap-2 backdrop-blur-xl shadow-2xl">
+            <button
+              onClick={() => setActiveTab('limitation')}
+              className={`px-8 py-3 rounded-xl text-sm font-bold transition-all uppercase tracking-widest ${activeTab === 'limitation'
+                ? 'bg-neutral-800 text-red-400 border border-red-500/20'
+                : 'text-neutral-400 hover:text-white'
+                }`}
             >
-              <div className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_15px_#f43f5e] absolute left-6 top-1/2 -translate-y-1/2"></div>
-              <h2 className="text-3xl font-bold text-gradient-legacy uppercase font-mono tracking-tighter mb-4 ml-6">The Problem</h2>
-              <p className="text-slate-300 text-lg leading-relaxed mb-6 ml-6">
-                  Traditional bots are <span className="text-white font-semibold">rigid constructs</span>. They rely on keywords, create friction, and fail when the human element takes control.
-              </p>
-              <div className="space-y-3 ml-6">
-                  {['Scripted Dead-ends', 'Fragile Logic Loops', 'Lost Conversion'].map((item, i) => (
-                    <div key={i} className="flex items-center gap-3 text-xs font-mono text-rose-400/60 uppercase tracking-widest">
-                      <span className="w-1 h-1 bg-rose-500 rounded-full"></span> {item}
+              The Limitation
+            </button>
+            <button
+              onClick={() => setActiveTab('standard')}
+              className={`px-8 py-3 rounded-xl text-sm font-bold transition-all uppercase tracking-widest ${activeTab === 'standard'
+                ? 'bg-gradient-to-r from-[#00d2ff] to-[#34d399] text-black shadow-lg shadow-[#00d2ff]/20'
+                : 'text-neutral-400 hover:text-white'
+                }`}
+            >
+              The Evoke Standard
+            </button>
+          </div>
+        </div>
+
+        {/* Content Area */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+
+          {/* Visual Narrative Side (40%) */}
+          <div className="lg:col-span-5">
+            {activeTab === 'limitation' ? (
+              <div className="animate-in fade-in slide-in-from-left-8 duration-700">
+                <div className="p-10 rounded-[2.5rem] glass-card-gap-light border-red-500/10 relative overflow-hidden group shadow-xl">
+                  <h3 className="text-3xl font-bold text-red-500 mb-6 tracking-tight">Static Friction</h3>
+                  <div className="space-y-5">
+                    {[
+                      'Rigid "if-then" loops',
+                      'Repetitive, high-friction cycles',
+                      'Untapped data insights'
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-center gap-4 text-neutral-600">
+                        <div className="w-2 h-2 rounded-full bg-red-500" />
+                        <span className="text-lg font-bold">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="mt-10 text-neutral-500 text-base italic leading-relaxed font-medium">
+                    Standard tools fail to adapt to complexity, leaving value trapped in legacy architecture.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="animate-in fade-in slide-in-from-left-8 duration-700">
+                <div className="p-10 rounded-[2.5rem] glass-card-gap-light border-[#00d2ff]/20 neural-glow-gap-light relative overflow-hidden shadow-xl">
+                  <h3 className="text-3xl font-bold text-[#00d2ff] mb-6 tracking-tight">Integrated Ecosystems</h3>
+                  <div className="space-y-5">
+                    <div className="flex items-center gap-4 text-black">
+                      <Brain size={22} className="text-[#00d2ff]" />
+                      <span className="text-lg font-bold tracking-tight">Neural Intent Recognition</span>
                     </div>
-                  ))}
+                    <div className="flex items-center gap-4 text-black">
+                      <Activity size={22} className="text-[#34d399]" />
+                      <span className="text-lg font-bold tracking-tight">Autonomous Logic Deployment</span>
+                    </div>
+                    <div className="flex items-center gap-4 text-black">
+                      <Target size={22} className="text-[#00d2ff]" />
+                      <span className="text-lg font-bold tracking-tight">Real-time Problem Solving</span>
+                    </div>
+                  </div>
+                  <div className="mt-10 pt-8 border-t border-neutral-200">
+                    <p className="text-[#34d399] font-black uppercase tracking-widest text-xs mb-2">Cognitive Impact:</p>
+                    <p className="text-neutral-600 text-base leading-relaxed font-medium">
+                      Moving beyond scripts into systems that interpret the "why" behind every interaction.
+                    </p>
+                  </div>
+                </div>
               </div>
+            )}
+          </div>
+
+          {/* Detailed Content Side (60%) */}
+          <div className="lg:col-span-7">
+            <div className={`transition-all duration-700`}>
+              <h2 className="text-4xl md:text-5xl font-bold mb-8 tracking-tight text-black">
+                {activeTab === 'limitation' ? "The Barrier to Growth" : "Clinical Precision in Motion"}
+              </h2>
+
+              <p className="text-xl md:text-2xl leading-relaxed text-black mb-10 font-bold">
+                {activeTab === 'limitation'
+                  ? "Standard digital tools are trapped in rigid, \"if-then\" loops. They fail to adapt to complex data, frustrate users with repetitive cycles, and ultimately leave your most valuable insights untapped."
+                  : "We engineer Integrated AI Ecosystems. By moving beyond simple scripts into Neural Intent Recognition and Autonomous Logic, Evoke AI interprets the \"why\" behind every interaction."
+                }
+              </p>
+
+              {activeTab === 'standard' && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="p-6 rounded-2xl bg-white border border-neutral-200 hover:border-[#00d2ff]/30 transition-all group shadow-sm">
+                    <ShieldCheck className="text-[#00d2ff] mb-4 group-hover:scale-110 transition-transform" size={32} />
+                    <h4 className="font-bold text-black text-lg mb-2 tracking-tight">Clinical Precision</h4>
+                    <p className="text-sm text-neutral-500 leading-relaxed font-bold">Zero-error deployment for high-stakes environments.</p>
+                  </div>
+                  <div className="p-6 rounded-2xl bg-white border border-neutral-200 hover:border-[#34d399]/30 transition-all group shadow-sm">
+                    <Cpu className="text-[#34d399] mb-4 group-hover:scale-110 transition-transform" size={32} />
+                    <h4 className="font-bold text-black text-lg mb-2 tracking-tight">Autonomous Logic</h4>
+                    <p className="text-sm text-neutral-500 leading-relaxed font-bold">Systems that self-optimize as data complexity grows.</p>
+                  </div>
+                </div>
+              )}
+
+              <a
+                href={activeTab === 'limitation' ? undefined : "#contact"}
+                className={`mt-12 px-10 py-5 rounded-2xl font-black uppercase tracking-[0.1em] text-sm flex items-center gap-3 transition-all w-fit ${activeTab === 'limitation'
+                  ? 'bg-neutral-300 text-black cursor-not-allowed pointer-events-none'
+                  : 'bg-black text-white hover:bg-[#00d2ff] hover:text-black hover:scale-105 active:scale-95 shadow-xl'
+                  }`}>
+                {activeTab === 'limitation' ? "Evolve Now" : "Deploy Your Ecosystem"}
+                <ChevronRight size={20} className={activeTab === 'standard' ? 'animate-bounce-x' : ''} />
+              </a>
             </div>
           </div>
 
-          {/* Panel 3: The Solution */}
-          <div className="w-screen h-full flex items-center justify-center px-[10%] shrink-0">
-            <div 
-              className="glass-panel p-12 rounded-[2rem] max-w-[500px] hover:border-emerald-500/30 group relative"
-              onMouseMove={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width - 0.5;
-                const y = (e.clientY - rect.top) / rect.height - 0.5;
-                e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateZ(5px)`;
-              }}
-              onMouseLeave={(e) => e.currentTarget.style.transform = 'none'}
-            >
-              <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_15px_#10b981] absolute left-6 top-1/2 -translate-y-1/2"></div>
-              <h2 className="text-3xl font-bold text-gradient-neural uppercase font-mono tracking-tighter mb-4 ml-6">The Evoke Solution</h2>
-              <p className="text-slate-300 text-lg leading-relaxed mb-6 ml-6">
-                  Our agents utilize <span className="text-emerald-400 font-bold">Neural Intent Recognition</span>. They don't just "match"—they understand, solve, and represent with clinical brand precision.
-              </p>
-              <div className="grid grid-cols-2 gap-4 ml-6">
-                  <div className="p-3 bg-white/5 rounded-lg border border-white/5 text-[10px] font-mono text-emerald-400 uppercase tracking-widest text-center">CONTEXT_SYNC: 100%</div>
-                  <div className="p-3 bg-white/5 rounded-lg border border-white/5 text-[10px] font-mono text-emerald-400 uppercase tracking-widest text-center">EMPATHY_ENGINE: ON</div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

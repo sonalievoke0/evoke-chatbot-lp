@@ -1,48 +1,62 @@
 import { useState, useEffect } from 'react'
+import { ArrowUp } from 'lucide-react'
 import Services from './Services'
 import TechStack from './TechStack'
+import ImageSection from './ImageSection'
 import TheGap from './TheGap'
 import FAQ from './FAQ'
 import heroVideo from './assets/hero-bg.mp4'
 import logo from './assets/logo.png'
+import Testimonials from './Testimonials'
+import CTA from './CTA'
+import Contact from './Contact'
+import Footer from './Footer'
 import './index.css'
 
 function App() {
   const [scrolled, setScrolled] = useState(false);
+  const [showTopBtn, setShowTopBtn] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
+      setShowTopBtn(window.scrollY > 600);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const goToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-neutral-950 text-white selection:bg-cyan-500/30">
-      {/* Floating Navbar */}
-      <nav className="fixed top-2 inset-x-2 z-[100] transition-all duration-300 pointer-events-none">
-        <div className={`container mx-auto px-6 flex justify-between items-center transition-all duration-500 pointer-events-auto rounded-xl max-w-[1400px] ${
-          scrolled 
-            ? 'bg-black/70 backdrop-blur-2xl border border-white/10 py-2.5 shadow-2xl' 
-            : 'bg-black py-3.5 shadow-xl'
+      {/* Floating Navbar - Blends with Hero */}
+      <nav className={`fixed top-0 inset-x-0 z-[100] transition-all duration-500 ${scrolled
+        ? 'bg-black/40 backdrop-blur-2xl border-b border-white/5 shadow-2xl'
+        : 'bg-transparent'
         }`}>
+        <div className={`container mx-auto px-6 flex justify-between items-center transition-all duration-500 max-w-[1400px] ${scrolled
+          ? 'py-3'
+          : 'py-8'
+          }`}>
           <div className="flex items-center gap-3">
             <img src={logo} alt="EVOKE Logo" className="h-7 w-auto object-contain" />
-            <span className="text-lg font-bold tracking-wider bg-gradient-to-r from-[#00d2ff] to-[#34d399] bg-clip-text text-transparent">
+            <span className="text-xl font-bold tracking-wider bg-gradient-to-r from-[#00d2ff] to-[#34d399] bg-clip-text text-transparent">
               EVOKE AI
             </span>
           </div>
-          <div className="hidden md:flex gap-10">
-            <a href="#" className="text-sm font-medium text-neutral-300 hover:text-white transition-colors">Features</a>
-            <a href="#services" className="text-sm font-medium text-neutral-300 hover:text-white transition-colors">Services</a>
-            <a href="#techstack" className="text-sm font-medium text-neutral-300 hover:text-white transition-colors">Tech</a>
-            <a href="#the-gap" className="text-sm font-medium text-neutral-300 hover:text-white transition-colors">Evolution</a>
-            <a href="#faq" className="text-sm font-medium text-neutral-300 hover:text-white transition-colors">FAQ</a>
+          <div className="hidden md:flex gap-12">
+            <a href="#" className="text-sm font-bold text-white/70 hover:text-white transition-all tracking-wide">Features</a>
+            <a href="#services" className="text-sm font-bold text-white/70 hover:text-white transition-all tracking-wide">Services</a>
+            <a href="#techstack" className="text-sm font-bold text-white/70 hover:text-white transition-all tracking-wide">Tech</a>
+            <a href="#the-gap" className="text-sm font-bold text-white/70 hover:text-white transition-all tracking-wide">Evolution</a>
+            <a href="#faq" className="text-sm font-bold text-white/70 hover:text-white transition-all tracking-wide">FAQ</a>
           </div>
-          <button className="btn-primary px-6 py-2 rounded-full text-xs transition-all shadow-lg hover:scale-105 active:scale-95">
+          <a href="#contact" className="bg-gradient-to-r from-[#00d2ff] to-[#34d399] px-8 py-2.5 rounded-full text-xs font-black uppercase tracking-widest text-black transition-all shadow-[0_0_20px_rgba(0,210,255,0.3)] hover:scale-105 active:scale-95">
             Get Started
-          </button>
+          </a>
         </div>
       </nav>
 
@@ -50,11 +64,11 @@ function App() {
       <header className="relative min-h-screen flex items-center overflow-hidden pt-32 pb-20">
         {/* Background Video */}
         <div className="absolute inset-0 z-0">
-          <video 
-            autoPlay 
-            muted 
-            loop 
-            playsInline 
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
             className="w-full h-full object-cover opacity-100"
           >
             <source src={heroVideo} type="video/mp4" />
@@ -66,14 +80,14 @@ function App() {
         {/* Hero Content - Two Column Layout */}
         <div className="container mx-auto px-6 z-10 relative">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
+
             {/* Left Content (8/12) */}
             <div className="lg:col-span-8">
               <div className="inline-flex items-center gap-2 px-2.5 py-1 mb-8 border border-cyan-500/20 bg-black/60 rounded-full text-[9px] font-bold text-[#00d2ff] tracking-[0.2em] uppercase backdrop-blur-md">
                 <span className="w-1 h-1 bg-[#00d2ff] rounded-full animate-pulse"></span>
                 Neural Engine v2.0
               </div>
-              
+
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 text-white leading-[1.05] drop-shadow-2xl">
                 Conversational <br />
                 AI <br />
@@ -82,18 +96,18 @@ function App() {
                   Human.
                 </span>
               </h1>
-              
-              <p className="max-w-xl text-base md:text-lg text-neutral-300 leading-relaxed mb-12 font-medium drop-shadow-md">
+
+              <p className="max-w-xl text-base md:text-xl text-neutral-100 leading-relaxed mb-12 font-medium drop-shadow-md">
                 Evoke AI builds high-performance, emotionally intelligent chatbots that transform how businesses interact with the world.
               </p>
-              
+
               <div className="flex flex-col sm:flex-row items-center gap-6">
-                <button className="btn-primary w-full sm:w-auto px-10 py-4 rounded-2xl font-bold text-lg transition-all transform hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,210,255,0.4)]">
-                  Create Your AI
-                </button>
-                <button className="w-full sm:w-auto bg-white/5 hover:bg-white/10 text-white border border-white/10 px-10 py-4 rounded-2xl font-bold text-lg transition-all backdrop-blur-md">
-                  Talk to Sales
-                </button>
+                <a href="#contact" className="btn-primary w-full sm:w-auto px-10 py-4 rounded-2xl font-bold text-lg transition-all transform hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,210,255,0.4)] flex items-center justify-center">
+                  Explore AI solutions
+                </a>
+                <a href="#contact" className="w-full sm:w-auto bg-white/5 hover:bg-white/10 text-white border border-white/10 px-10 py-4 rounded-2xl font-bold text-lg transition-all backdrop-blur-md flex items-center justify-center">
+                  Build your bot
+                </a>
               </div>
             </div>
 
@@ -126,21 +140,43 @@ function App() {
       {/* Services Section */}
       <Services />
 
+      {/* Image Section */}
+      <ImageSection />
+
       {/* Tech Stack Section */}
       <TechStack />
 
       {/* The Gap Section (Visual Transformation) */}
       <TheGap />
 
+      {/* Testimonials Section */}
+      <Testimonials />
+
       {/* FAQ Section */}
       <FAQ />
 
-      {/* Footer */}
-      <div className="container mx-auto px-4 mt-auto">
-        <footer className="py-12 border-t border-neutral-900 text-center text-neutral-600">
-          <p>© 2026 EVOKE AI Research. All rights reserved.</p>
-        </footer>
-      </div>
+      {/* Spacer for visual separation */}
+      <div className="h-24 md:h-48 bg-neutral-950"></div>
+
+      {/* Contact & Collaboration Section */}
+      <Contact />
+
+      {/* Final Call to Action */}
+      <CTA />
+
+      {/* Footer Section */}
+      <Footer />
+
+      {/* Back to Top Button */}
+      <button
+        onClick={goToTop}
+        className={`fixed bottom-8 right-8 z-[110] p-4 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 text-white shadow-2xl transition-all duration-500 hover:scale-110 hover:border-cyan-500/50 hover:shadow-cyan-500/20 active:scale-95 group ${
+          showTopBtn ? 'translate-y-0 opacity-100' : 'translate-y-24 opacity-0 pointer-events-none'
+        }`}
+      >
+        <ArrowUp className="w-6 h-6 transition-transform duration-300 group-hover:-translate-y-1" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 to-emerald-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      </button>
     </div>
   )
 }
