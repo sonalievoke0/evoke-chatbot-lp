@@ -7,7 +7,7 @@ const ImageSection = lazy(() => import('./ImageSection'))
 const TheGap = lazy(() => import('./TheGap'))
 const FAQ = lazy(() => import('./FAQ'))
 // heroVideo loaded from public folder for performance
-const HERO_VIDEO_SRC = '/ai-assistants/hero-bg.mp4'
+const HERO_VIDEO_SRC = '/hero-bg.mp4'
 import logo from './assets/logo.png'
 const Testimonials = lazy(() => import('./Testimonials'))
 const CTA = lazy(() => import('./CTA'))

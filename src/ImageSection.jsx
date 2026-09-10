@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Sparkles, Brain, Cpu, Share2 } from 'lucide-react';
 
-const aeonImage = '/ai-assistants/aeon-image.webp';
+const aeonImage = '/aeon-image.webp';
 
 const ImageSection = () => {
   const [activeFeature, setActiveFeature] = useState(null);

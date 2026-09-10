@@ -21,7 +21,7 @@ import {
 // audioFile import removed — loaded from public folder via AUDIO_SRC
 
 // Audio loaded from public folder to avoid bundling 9MB into JS
-const AUDIO_SRC = "/ai-assistants/audio.mp3";
+const AUDIO_SRC = "/audio.mp3";
 
 // Frequency bar distribution for natural waveform (48 bars)
 const WAVEFORM_BARS = [
@@ -128,12 +128,6 @@ export default function CallDemo() {
     <section id="call-demo" className="relative w-full py-12 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-10 xl:px-14 bg-neutral-100 text-black selection:bg-cyan-100 overflow-hidden border-t border-neutral-200/70">
       {/* Background Graphic Layer */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <img
-          src="/ai-assistants/headphones.jpg"
-          alt="AI Audio Interface"
-          loading="lazy"
-          className="w-full h-full object-cover object-center opacity-40 blur-sm"
-        />
         <div className="absolute inset-0 bg-neutral-100/50" />
       </div>
 
@@ -337,7 +331,7 @@ export default function CallDemo() {
             <div className="relative w-full max-w-[450px] lg:max-w-[500px] xl:max-w-[600px] transition-all duration-700 hover:scale-[1.02]">
               <div className="absolute inset-0 bg-gradient-to-tr from-[#00d2ff]/25 to-[#34d399]/25 blur-[100px] xl:blur-[120px] rounded-full pointer-events-none"></div>
               <img
-                src="/ai-assistants/demo.webp"
+                src="/demo.webp"
                 alt="Call Demo Interface"
                 loading="lazy"
                 className="relative z-10 w-full h-auto object-contain drop-shadow-2xl floating-image rounded-2xl pointer-events-none"

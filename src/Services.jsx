@@ -12,10 +12,10 @@ import {
 } from "lucide-react";
 
 // Service images loaded from public folder as WebP for performance
-const service1Img = "/ai-assistants/service-1.webp";
-const service2Img = "/ai-assistants/service-2.webp";
-const service3Img = "/ai-assistants/service-3.webp";
-const service4Img = "/ai-assistants/service-4.webp";
+const service1Img = "/service-1.webp";
+const service2Img = "/service-2.webp";
+const service3Img = "/service-3.webp";
+const service4Img = "/service-4.webp";
 
 const SERVICES_DATA = [
   {
