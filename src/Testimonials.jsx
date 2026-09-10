@@ -1,5 +1,7 @@
+"use client";
+
 import React from 'react';
-import { Quote, MessageSquare, Zap, GraduationCap } from 'lucide-react';
+import { Quote, MessageSquare, Zap, GraduationCap, Sparkles } from 'lucide-react';
 
 const TESTIMONIAL_DATA = [
   {
@@ -65,58 +67,63 @@ const ALL_TESTIMONIALS = [...TESTIMONIAL_DATA, ...TESTIMONIAL_DATA];
 
 const Testimonials = () => {
   return (
-    <section className="py-32 bg-neutral-950 relative overflow-hidden">
+    <section id="testimonials" className="py-14 sm:py-20 md:py-28 bg-neutral-950 relative overflow-hidden border-t border-neutral-900">
       
       {/* Background Accents */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-[#00d2ff]/5 blur-[120px] rounded-full pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] md:w-[1100px] h-[450px] md:h-[600px] bg-[#00d2ff]/5 blur-[140px] rounded-full pointer-events-none"></div>
 
-      <div className="container mx-auto px-6 relative z-10 mb-16 text-center">
-        <div className="max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 border border-white/10 bg-white/5 rounded-full text-[10px] font-bold text-white/60 tracking-[0.3em] uppercase">
-            <Quote className="w-3 h-3 text-[#00d2ff]" />
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 mb-8 sm:mb-14 text-center">
+        <div className="max-w-3xl mx-auto space-y-2 sm:space-y-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 border border-white/10 bg-white/5 rounded-full text-[10px] sm:text-xs font-bold text-neutral-400 tracking-[0.25em] uppercase shadow-xs">
+            <Sparkles className="w-3 h-3 text-[#00d2ff]" />
             Transmission Feed
           </div>
-          <h2 className="text-5xl md:text-6xl font-bold text-white leading-tight tracking-tight">
-            Loved by <br /> 
-            <span className="bg-gradient-to-r from-[#00d2ff] to-[#34d399] bg-clip-text text-transparent">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.15] tracking-tight">
+            Loved by{" "}
+            <span className="bg-gradient-to-r from-[#00d2ff] via-[#00b4d8] to-[#34d399] bg-clip-text text-transparent">
               High-Growth Teams.
             </span>
           </h2>
+          <p className="text-xs sm:text-base text-neutral-400 font-normal max-w-xl mx-auto leading-relaxed">
+            Real feedback from fast-moving enterprises leveraging next-gen conversational intelligence.
+          </p>
         </div>
       </div>
 
       {/* Auto-Scroller Container */}
-      <div className="relative group/scroller overflow-hidden">
+      <div className="relative group/scroller overflow-hidden py-2">
         {/* Gradient Masks */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-r from-neutral-950 via-neutral-950/80 to-transparent z-20 pointer-events-none"></div>
-        <div className="absolute right-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-l from-neutral-950 via-neutral-950/80 to-transparent z-20 pointer-events-none"></div>
+        <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 md:w-64 bg-gradient-to-r from-neutral-950 via-neutral-950/80 to-transparent z-20 pointer-events-none"></div>
+        <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 md:w-64 bg-gradient-to-l from-neutral-950 via-neutral-950/80 to-transparent z-20 pointer-events-none"></div>
 
-        {/* Marquee Inner */}
-        <div className="flex animate-marquee group-hover/scroller:pause-marquee gap-8 px-6">
+        {/* Marquee Track */}
+        <div className="flex animate-marquee group-hover/scroller:pause-marquee gap-4 sm:gap-6 px-4">
           {ALL_TESTIMONIALS.map((item, idx) => (
             <div 
               key={idx} 
-              className="min-w-[380px] md:min-w-[450px] p-8 bg-neutral-900/40 backdrop-blur-xl border border-white/5 rounded-[2.5rem] flex flex-col justify-between hover:border-white/20 transition-all duration-500 hover:-translate-y-2 group/card"
+              className="w-[290px] sm:w-[350px] md:w-[420px] shrink-0 p-5 sm:p-6 md:p-7 bg-neutral-900/60 backdrop-blur-xl border border-white/10 hover:border-cyan-400/40 rounded-2xl sm:rounded-3xl flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 group/card shadow-lg"
             >
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                   <div className="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full border border-white/5">
+                   <div className="flex items-center gap-1.5 px-2.5 py-1 bg-white/5 rounded-full border border-white/10">
                       {item.icon}
-                      <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">{item.category}</span>
+                      <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">{item.category}</span>
                    </div>
-                   <Quote className="w-6 h-6 text-neutral-800 group-hover/card:text-[#00d2ff]/30 transition-colors" />
+                   <Quote className="w-5 h-5 text-neutral-700 group-hover/card:text-[#00d2ff]/40 transition-colors" />
                 </div>
-                <p className="text-lg md:text-xl text-neutral-300 leading-relaxed font-medium italic">
-                  "{item.text}"
+                <p className="text-xs sm:text-sm md:text-[15px] text-neutral-300 leading-relaxed font-normal italic">
+                  &ldquo;{item.text}&rdquo;
                 </p>
               </div>
               
-              <div className="pt-8 mt-8 border-t border-white/5 flex items-center justify-between">
-                <div className="flex flex-col text-left">
-                  <span className="text-white font-bold tracking-tight">{item.author}</span>
-                  <span className="text-neutral-500 text-sm font-mono tracking-tighter">{item.handle}</span>
+              <div className="pt-4 mt-4 border-t border-white/10 flex items-center justify-between">
+                <div className="flex items-center gap-3 text-left">
+                  <div className="flex flex-col text-left">
+                    <span className="text-white text-xs sm:text-sm font-bold tracking-tight">{item.author}</span>
+                    <span className="text-neutral-500 text-[11px] sm:text-xs font-mono">{item.handle}</span>
+                  </div>
                 </div>
-                <div className="w-1.5 h-1.5 rounded-full bg-[#34d399]/40 animate-pulse"></div>
+                <div className="w-2 h-2 rounded-full bg-[#34d399] animate-pulse shadow-[0_0_8px_#34d399]"></div>
               </div>
             </div>
           ))}
@@ -126,16 +133,22 @@ const Testimonials = () => {
       <style>{`
         @keyframes marquee {
           0% { transform: translateX(0); }
-          100% { transform: translateX(calc(-380px * 8 - 32px * 8)); }
+          100% { transform: translateX(calc(-290px * 8 - 16px * 8)); }
+        }
+        @media (min-width: 640px) {
+          @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-350px * 8 - 24px * 8)); }
+          }
         }
         @media (min-width: 768px) {
           @keyframes marquee {
             0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-450px * 8 - 32px * 8)); }
+            100% { transform: translateX(calc(-420px * 8 - 24px * 8)); }
           }
         }
         .animate-marquee {
-          animation: marquee 60s linear infinite;
+          animation: marquee 45s linear infinite;
         }
         .pause-marquee {
           animation-play-state: paused;

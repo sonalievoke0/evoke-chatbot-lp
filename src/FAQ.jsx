@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState } from 'react';
-import { Plus, Minus } from 'lucide-react';
+import { Plus, Minus, Sparkles } from 'lucide-react';
 
 const FAQ_DATA = [
   {
@@ -30,20 +32,20 @@ const FAQ_DATA = [
 
 const FAQItem = ({ question, answer, isOpen, onClick }) => {
   return (
-    <div className={`bg-neutral-950 p-8 rounded-[2rem] border transition-all duration-500 ${isOpen ? 'border-[#00d2ff]/50 shadow-[0_0_30px_rgba(0,210,255,0.1)]' : 'border-neutral-800 hover:border-neutral-700'}`}>
+    <div className={`bg-neutral-950 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border transition-all duration-300 ${isOpen ? 'border-[#00d2ff]/50 shadow-[0_0_25px_rgba(0,210,255,0.08)]' : 'border-neutral-800/80 hover:border-neutral-700'}`}>
       <button
         onClick={onClick}
-        className="w-full flex items-start justify-between text-left group"
+        className="w-full flex items-center justify-between text-left group gap-3"
       >
-        <span className={`text-2xl font-bold transition-colors leading-tight pr-4 ${isOpen ? 'text-[#00d2ff]' : 'text-white group-hover:text-neutral-300'}`}>
+        <span className={`text-sm sm:text-base md:text-lg font-bold transition-colors leading-snug ${isOpen ? 'text-[#00d2ff]' : 'text-white group-hover:text-neutral-200'}`}>
           {question}
         </span>
-        <div className={`flex-shrink-0 mt-1 w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-300 ${isOpen ? 'bg-[#00d2ff] border-[#00d2ff]' : 'bg-white/5 border-neutral-800 group-hover:border-neutral-600'}`}>
-          {isOpen ? <Minus className="w-5 h-5 text-black" /> : <Plus className="w-5 h-5 text-neutral-500 group-hover:text-white" />}
+        <div className={`flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full border flex items-center justify-center transition-all duration-300 ${isOpen ? 'bg-[#00d2ff] border-[#00d2ff]' : 'bg-white/5 border-neutral-800 group-hover:border-neutral-600'}`}>
+          {isOpen ? <Minus className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-black" /> : <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neutral-400 group-hover:text-white" />}
         </div>
       </button>
-      <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? 'max-h-60 opacity-100 mt-6' : 'max-h-0 opacity-0'}`}>
-        <p className="text-neutral-400 text-lg md:text-xl leading-relaxed">
+      <div className={`overflow-hidden transition-all duration-400 ease-in-out ${isOpen ? 'max-h-60 opacity-100 mt-3 pt-3 border-t border-neutral-800/60' : 'max-h-0 opacity-0'}`}>
+        <p className="text-neutral-400 text-xs sm:text-sm md:text-[15px] leading-relaxed">
           {answer}
         </p>
       </div>
@@ -52,29 +54,34 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
 };
 
 const FAQ = () => {
-  const [openIndex, setOpenIndex] = useState(0);
+  const [openIndex, setOpenIndex] = useState(-1);
 
   return (
-    <section id="faq" className="py-48 bg-neutral-50 relative overflow-hidden">
+    <section id="faq" className="py-14 sm:py-20 md:py-28 bg-neutral-50 relative overflow-hidden border-t border-neutral-200/80">
       {/* Subtle light background decoration */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(0,210,255,0.03)_0,transparent_70%)] pointer-events-none"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(0,210,255,0.04)_0,transparent_70%)] pointer-events-none"></div>
 
-      <div className="container mx-auto px-6 max-w-7xl relative z-10">
-        <div className="text-center mb-24">
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 border border-neutral-200 bg-neutral-50 rounded-full text-[12px] font-bold text-neutral-500 tracking-[0.3em] uppercase">
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative z-10 space-y-8 sm:space-y-12">
+        {/* Header Section */}
+        <div className="text-center space-y-2.5 sm:space-y-3.5 max-w-3xl mx-auto px-2">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 border border-neutral-200/90 bg-white rounded-full text-[10px] sm:text-xs font-bold text-neutral-600 tracking-[0.25em] uppercase shadow-xs">
+            <Sparkles className="w-3 h-3 text-[#00d2ff]" />
             Intelligence Query
           </div>
-          <h2 className="text-6xl md:text-8xl font-bold text-neutral-900 mb-8 tracking-tighter">
-            Frequently Asked <br />
-            <span className="bg-gradient-to-r from-[#00d2ff] to-[#34d399] bg-clip-text text-transparent">Questions</span>
+          <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-950 tracking-tight leading-[1.15]">
+            Frequently Asked{" "}
+            <span className="bg-gradient-to-r from-[#00d2ff] via-[#00b4d8] to-[#34d399] bg-clip-text text-transparent">
+              Questions
+            </span>
           </h2>
-          <p className="text-neutral-500 text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-base md:text-lg text-neutral-600 font-medium max-w-2xl mx-auto leading-relaxed">
             Everything you need to know about the next generation of conversational intelligence.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          <div className="space-y-6 md:space-y-8">
+        {/* 2-Column Responsive Compact Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 lg:gap-5">
+          <div className="space-y-3.5 sm:space-y-4">
             {FAQ_DATA.slice(0, 3).map((item, index) => (
               <FAQItem
                 key={index}
@@ -85,7 +92,7 @@ const FAQ = () => {
               />
             ))}
           </div>
-          <div className="space-y-6 md:space-y-8">
+          <div className="space-y-3.5 sm:space-y-4">
             {FAQ_DATA.slice(3, 6).map((item, index) => (
               <FAQItem
                 key={index + 3}

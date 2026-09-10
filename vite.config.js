@@ -4,8 +4,11 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+   base: '/ai-assistants/',
   plugins: [
     react(),
     tailwindcss(),
   ],
 })
+
+

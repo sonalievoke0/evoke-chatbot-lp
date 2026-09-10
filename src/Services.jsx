@@ -1,173 +1,195 @@
-import React, { useState } from 'react';
-import { MessageSquare, TrendingUp, Users, Layout, ArrowUpRight } from 'lucide-react';
-import service1 from './assets/service 1.png';
-import service2 from './assets/service 2.png';
-import service3 from './assets/service 3.png';
-import service4 from './assets/service 4.png';
+"use client";
+
+import React, { useState, useRef } from "react";
+import { motion } from "framer-motion";
+import {
+  MessageSquare,
+  TrendingUp,
+  Users,
+  Layout,
+  Sparkles,
+  CheckCircle2
+} from "lucide-react";
+
+// Service images loaded from public folder as WebP for performance
+const service1Img = "/ai-assistants/service-1.webp";
+const service2Img = "/ai-assistants/service-2.webp";
+const service3Img = "/ai-assistants/service-3.webp";
+const service4Img = "/ai-assistants/service-4.webp";
 
 const SERVICES_DATA = [
   {
-    id: 'enterprise-chatbots',
-    title: 'Enterprise Chatbots',
-    headline: 'Enterprise Chatbots',
-    description: 'Scalable, secure, and ready to handle thousands of concurrent queries with zero latency.',
-    icon: <MessageSquare className="w-14 h-14 text-[#00d2ff]" />,
+    id: "enterprise-chatbots",
+    num: "01",
+    title: "Enterprise Chatbots",
+    subtitle: "Intelligent Conversations. Built to Scale.",
+    description:
+      "Handle thousands of conversations simultaneously with secure, enterprise-grade AI, ultra-fast response times, and reliable 24/7 availability.",
+    image: service1Img,
+    icon: MessageSquare,
+    accentGlow: "rgba(0, 210, 255, 0.18)",
   },
   {
-    id: 'sales-automation',
-    title: 'Sales Automation',
-    headline: 'Sales Automation',
-    description: 'Intelligent funnels that qualify leads and schedule meetings while you sleep, maximizing conversion.',
-    icon: <TrendingUp className="w-14 h-14 text-[#34d399]" />,
+    id: "sales-automation",
+    num: "02",
+    title: "Sales Automation",
+    subtitle: "Turn Conversations Into Revenue.",
+    description:
+      "Engage and qualify inbound leads 24/7, automatically schedule high-value meetings, and move prospects through your pipeline with intelligent AI-driven automation.",
+    image: service2Img,
+    icon: TrendingUp,
+    accentGlow: "rgba(52, 211, 153, 0.18)",
   },
   {
-    id: 'customer-success',
-    title: 'Customer Success',
-    headline: 'Customer Success',
-    description: 'Support that understands nuance and resolves complex tickets instantly using advanced NLP.',
-    icon: <Users className="w-14 h-14 text-emerald-500" />,
+    id: "customer-success",
+    num: "03",
+    title: "Customer Success",
+    subtitle: "Support Customers. Wherever They Are.",
+    description:
+      "Deliver intelligent, context-aware support across every channel. Resolve common issues instantly while seamlessly carrying customer context across WhatsApp, Slack, and web chat.",
+    image: service3Img,
+    icon: Users,
+    accentGlow: "rgba(0, 210, 255, 0.18)",
   },
   {
-    id: 'interactive-ui-ux',
-    title: 'Interactive UI/UX',
-    headline: 'Interactive UI/UX',
-    description: 'Stunning, responsive chat interfaces designed with Tailwind CSS for a premium, high-converting feel.',
-    icon: <Layout className="w-14 h-14 text-purple-500" />,
+    id: "interactive-ui-ux",
+    num: "04",
+    title: "Interactive UI/UX",
+    subtitle: "Interfaces Designed for Interaction.",
+    description:
+      "Create engaging AI experiences with custom chat interfaces, fluid animations, responsive layouts, and accessibility built into every interaction.",
+    image: service4Img,
+    icon: Layout,
+    accentGlow: "rgba(168, 85, 247, 0.18)",
   }
 ];
 
-const Services = () => {
-  const [activeTab, setActiveTab] = useState(SERVICES_DATA[0].id);
-  const activeIdx = SERVICES_DATA.findIndex(s => s.id === activeTab);
-  const total = SERVICES_DATA.length;
+export default function Services() {
+  const [activeMobileIdx, setActiveMobileIdx] = useState(0);
+  const scrollContainerRef = useRef(null);
+
+  const handleScroll = (e) => {
+    const scrollLeft = e.currentTarget.scrollLeft;
+    const itemWidth = e.currentTarget.offsetWidth * 0.82;
+    const newIdx = Math.round(scrollLeft / (itemWidth || 1));
+    setActiveMobileIdx(Math.min(SERVICES_DATA.length - 1, Math.max(0, newIdx)));
+  };
+
+  const scrollToSlide = (idx) => {
+    if (!scrollContainerRef.current) return;
+    const itemWidth = scrollContainerRef.current.offsetWidth * 0.82;
+    scrollContainerRef.current.scrollTo({
+      left: idx * itemWidth,
+      behavior: "smooth"
+    });
+    setActiveMobileIdx(idx);
+  };
 
   return (
-    <section id="services" className="relative py-48 bg-neutral-50 flex items-center justify-center p-6 md:p-12 font-sans selection:bg-cyan-100 overflow-hidden">
-      {/* Background Decorative Element */}
-      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-500/5 blur-[160px] rounded-full pointer-events-none"></div>
+    <section
+      id="services"
+      className="relative bg-neutral-100/90 text-neutral-900 selection:bg-cyan-100 w-full h-[100dvh] sm:h-auto flex flex-col justify-center py-4 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-10 xl:px-14 overflow-hidden border-t border-neutral-200/70"
+    >
+      {/* Soft Ambient Mesh Lighting */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[1200px] xl:w-[1600px] h-[350px] sm:h-[450px] xl:h-[600px] bg-gradient-to-tr from-[#00d2ff]/10 via-[#34d399]/6 to-transparent blur-[120px] sm:blur-[160px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-[300px] sm:w-[550px] xl:w-[750px] h-[300px] sm:h-[400px] xl:h-[550px] bg-gradient-to-bl from-[#00d2ff]/6 to-transparent blur-[100px] sm:blur-[140px] rounded-full pointer-events-none" />
 
-      <div className="max-w-[1500px] w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10">
-
-        {/* Left Content Column */}
-        <div className="lg:col-span-5 space-y-16 z-50 py-4">
-          <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/10 border border-cyan-500/20 rounded-full text-[12px] font-bold text-cyan-600 tracking-[0.2em] uppercase">
-              Core Capabilities
-            </div>
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-neutral-900 leading-[1.1] tracking-tighter">
-              What sets our <br />
-              <span className="bg-gradient-to-r from-cyan-600 to-emerald-600 bg-clip-text text-transparent">solutions apart?</span>
-            </h1>
+      <div className="w-full max-w-[1650px] mx-auto relative z-10 space-y-6 sm:space-y-12 lg:space-y-14">
+        {/* Header Section */}
+        <div className="text-center space-y-2 sm:space-y-3.5 max-w-3xl mx-auto px-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/90 backdrop-blur-md rounded-full text-[10px] sm:text-xs font-bold text-cyan-800 tracking-[0.2em] uppercase shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-cyan-500/15">
+            <Sparkles className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-[#00d2ff]" />
+            Core Capabilities
           </div>
-
-          <nav className="flex flex-col space-y-6">
-            {SERVICES_DATA.map((service) => (
-              <button
-                key={service.id}
-                onClick={() => setActiveTab(service.id)}
-                className={`flex items-center text-left group transition-all duration-300 ${activeTab === service.id
-                  ? 'text-black font-bold'
-                  : 'text-black font-medium'
-                  }`}
-              >
-                <div className={`w-2 h-16 mr-10 rounded-full transition-all duration-500 ${activeTab === service.id
-                  ? 'bg-gradient-to-b from-cyan-500 to-emerald-500 opacity-100 shadow-[0_0_30px_rgba(6,182,212,0.4)]'
-                  : 'bg-neutral-200 opacity-30 group-hover:opacity-100'
-                  }`} />
-                <span className="text-2xl md:text-3xl lg:text-4xl tracking-tighter  duration-300 group-hover:translate-x-2">
-                  {service.title}
-                </span>
-              </button>
-            ))}
-          </nav>
+          <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-neutral-950 leading-[1.15] tracking-tight">
+            What Sets Our{" "}
+            <span className="bg-gradient-to-r from-[#00d2ff] via-[#00b4d8] to-[#34d399] bg-clip-text text-transparent">
+              Solutions Apart?
+            </span>
+          </h2>
+          <p className="text-xs sm:text-base md:text-lg text-neutral-600 font-medium max-w-2xl mx-auto leading-relaxed">
+            Next-generation conversational AI infrastructure engineered for extreme speed, enterprise security, and measurable ROI.
+          </p>
         </div>
 
-        {/* Right Preview Column */}
-        <div className="lg:col-span-7 relative h-[900px] flex items-center justify-center">
-          <div className="relative w-full h-full flex items-center justify-center">
-            {SERVICES_DATA.map((service, index) => {
-              let displayOffset = (index - activeIdx + total) % total;
-              const isFront = displayOffset === 0;
+        {/* Services Grid (Compact 2x2 on Mobile, 4-Col on Desktop) */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 xl:gap-7 pb-2 sm:pb-0">
+          {SERVICES_DATA.map((service, index) => {
+            const IconComponent = service.icon;
 
-              const isEnterprise = service.id === 'enterprise-chatbots';
-              const isSalesAutomation = service.id === 'sales-automation';
-              const isCustomerSuccess = service.id === 'customer-success';
-              const isUIUX = service.id === 'interactive-ui-ux';
-              const hasImage = isEnterprise || isSalesAutomation || isCustomerSuccess || isUIUX;
-
-              let activeImage = null;
-              if (isEnterprise) activeImage = service1;
-              else if (isSalesAutomation) activeImage = service2;
-              else if (isCustomerSuccess) activeImage = service3;
-              else if (isUIUX) activeImage = service4;
-
-              const style = {
-                transform: `perspective(2000px) translateX(${displayOffset * 150}px) translateZ(${-displayOffset * 150}px) rotateY(${-displayOffset * 5}deg) scale(${1 - displayOffset * 0.08})`,
-                zIndex: 40 - displayOffset,
-                opacity: isFront ? 1 : Math.max(0, 0.6 - (displayOffset * 0.2)),
-                cursor: isFront ? 'default' : 'pointer',
-                filter: isFront ? 'none' : `blur(${displayOffset * 1}px)`,
-              };
-
-              return (
+            return (
+              <motion.div
+                key={service.id}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.4, delay: index * 0.06 }}
+                className="w-full group relative rounded-xl sm:rounded-3xl bg-white/95 hover:bg-white backdrop-blur-md text-neutral-900 p-2.5 sm:p-6 xl:p-7 overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_45px_-10px_rgba(0,210,255,0.16)] border border-white hover:border-cyan-400/40 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
+              >
+                {/* Radial Glow on Hover */}
                 <div
-                  key={service.id}
-                  style={style}
-                  onClick={() => !isFront && setActiveTab(service.id)}
-                  className={`absolute left-0 top-1/2 -translate-y-1/2 w-full max-w-[750px] aspect-[16/10] bg-neutral-900 rounded-[3.5rem] shadow-[0_60px_120px_-30px_rgba(0,0,0,0.4)] overflow-hidden border transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1) ${isFront ? 'border-white/10' : 'border-transparent'
-                    } group`}
-                >
-                  {/* Image Background with Blending */}
-                  <div className="absolute inset-0 z-0">
-                    {hasImage ? (
-                      <img
-                        src={activeImage}
-                        alt=""
-                        className="w-full h-full object-cover transition-transform duration-[3000ms] ease-out group-hover:scale-110"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-neutral-900 flex items-center justify-center">
-                        <div className="w-64 h-64 bg-cyan-500/20 blur-[100px] rounded-full animate-pulse"></div>
-                      </div>
-                    )}
-                    {/* Gradient Overlays for Blending */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent z-10"></div>
-                    <div className="absolute inset-0 bg-gradient-to-r from-neutral-950/20 to-transparent z-10"></div>
+                  className="absolute -right-12 -top-12 w-[240px] h-[240px] rounded-full opacity-0 group-hover:opacity-100 blur-[60px] transition-opacity duration-500 pointer-events-none"
+                  style={{
+                    background: `radial-gradient(circle, ${service.accentGlow} 0%, transparent 70%)`
+                  }}
+                />
+
+                <div className="relative z-10 space-y-2 sm:space-y-4">
+                  {/* Top Visual Stage */}
+                  <div className="w-full aspect-[4/3] sm:aspect-[16/9] lg:aspect-[16/10] xl:aspect-[16/9] rounded-lg sm:rounded-2xl overflow-hidden shadow-sm relative flex items-center justify-center border border-neutral-200/50 mb-2 sm:mb-4">
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 pointer-events-none ring-1 ring-inset ring-black/5 rounded-lg sm:rounded-2xl" />
                   </div>
 
-                  {/* Icon floating */}
-                  <div className="absolute top-10 right-10 z-20">
-                    <div className="p-5 bg-white/5 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:border-cyan-500/50">
-                      {React.cloneElement(service.icon, { className: 'w-8 h-8 text-white' })}
+                  {/* Header: Number & Icon */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-[9px] sm:text-xs font-mono font-bold px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md sm:rounded-lg bg-gradient-to-tr from-[#00d2ff]/12 to-[#34d399]/12 text-cyan-950 border border-[#00d2ff]/25">
+                      {service.num}
+                    </span>
+
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 xl:w-9 xl:h-9 rounded-lg sm:rounded-xl bg-gradient-to-tr from-[#00d2ff]/15 to-[#34d399]/15 text-cyan-800 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                      <IconComponent className="w-3 h-3 sm:w-4 sm:h-4 text-cyan-700" />
                     </div>
                   </div>
 
-                  {/* Content Overlay */}
-                  <div className="absolute inset-x-0 bottom-0 p-12 md:p-16 z-20 space-y-8">
-                    <div className="space-y-3">
-                      <h3 className="text-4xl md:text-5xl font-bold text-white leading-tight tracking-tighter">
-                        {service.headline}
-                      </h3>
-                    </div>
-                    <p className="text-neutral-200 text-xl md:text-2xl leading-relaxed font-medium">
+                  {/* Title, Subtitle & Description */}
+                  <div className="space-y-1 sm:space-y-1.5">
+                    <h3 className="text-[11px] sm:text-lg xl:text-[22px] font-extrabold text-neutral-950 tracking-tight group-hover:text-cyan-950 transition-colors leading-snug">
+                      {service.title}
+                    </h3>
+                    <p className="text-[9px] sm:text-xs xl:text-[13px] font-semibold text-cyan-800 tracking-tight leading-snug">
+                      {service.subtitle}
+                    </p>
+                    <p className="text-neutral-600 text-[9px] sm:text-sm font-normal leading-[1.3] sm:leading-relaxed pt-0.5 sm:pt-1">
                       {service.description}
                     </p>
-                    <div className="pt-6">
-                      <a href="#contact" className="flex items-center gap-4 text-white font-black text-base md:text-lg uppercase tracking-[0.2em] group/link w-fit border-b border-white/20 pb-1 hover:border-white transition-all">
-                        Start Now 
-                        <ArrowUpRight className="w-6 h-6 transition-transform duration-300 group-hover/link:translate-x-1 group-hover/link:-translate-y-1" />
-                      </a>
-                    </div>
                   </div>
-
-                  {/* Inner Border Decorative */}
-                  <div className="absolute inset-6 border border-white/5 rounded-[2rem] pointer-events-none z-30"></div>
                 </div>
-              );
-            })}
-          </div>
+
+                {/* Bottom: Feature List */}
+                {service.features && service.features.length > 0 && (
+                  <div className="relative z-10 pt-2 sm:pt-4 mt-2 sm:mt-4 border-t border-neutral-100 space-y-1 sm:space-y-2">
+                    {service.features.map((feat, fIdx) => (
+                      <div
+                        key={fIdx}
+                        className="flex items-center gap-1.5 sm:gap-2.5 text-[9px] sm:text-[13px] font-medium text-neutral-700"
+                      >
+                        <CheckCircle2 className="w-3 h-3 sm:w-4 sm:h-4 text-emerald-500 flex-shrink-0" />
+                        <span className="truncate">{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
   );
-}; export default Services;
+}
