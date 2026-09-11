@@ -112,11 +112,6 @@ const TheGap = () => {
 
           {/* Visual Narrative Side */}
           <div className="md:col-span-5 relative flex flex-col items-center">
-            {/* Visual Image */}
-            <div className="w-full max-w-[240px] sm:max-w-[320px] mb-8 relative hidden sm:block">
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#00d2ff]/20 to-[#34d399]/20 blur-[60px] rounded-full"></div>
-              <img src="/hero.png" alt="AI Solution" loading="lazy" className="w-full h-auto object-contain relative z-10 floating-image drop-shadow-xl" />
-            </div>
             
             <div className="w-full">
             {activeTab === 'limitation' ? (
